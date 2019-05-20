@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "User")
+@Table(name = "Users")
 public class User {
     public User(String login, String password, String name, String email) {
         this.login = login;
@@ -19,6 +19,8 @@ public class User {
         this.name = name;
         this.email = email;
     }
+
+    public User(){}
 
     @Id
     @Column(name = "login")
@@ -31,7 +33,7 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     public String getLogin() {

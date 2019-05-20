@@ -35,7 +35,7 @@ public class UsersController {
 
     @RequestMapping(value = "/{login}", method = RequestMethod.PUT)
     public User updateUser(@PathVariable String login, @RequestBody User user) {
-        return usersDao.updateUser(user);
+        return usersDao.updateUser(login, user);
     }
 
     @RequestMapping(value = "/{login}", method = RequestMethod.DELETE)
