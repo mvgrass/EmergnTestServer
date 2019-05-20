@@ -2,9 +2,12 @@ package com.mvgrass.Server.Dao;
 
 import com.mvgrass.Server.Model.User;
 
+import java.util.List;
+
 public interface IUsersDao {
-    void createUser(User user);
-    User getUserByLogin();
-    void updateUser(User user);
-    void delete(User user);
+    User createUser(User user);
+    User getUserByLogin(String login);
+    User updateUser(User user);
+    void delete(String user);
+    List<User> findAllUsers();
 }

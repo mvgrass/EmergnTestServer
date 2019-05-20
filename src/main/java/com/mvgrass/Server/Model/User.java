@@ -1,25 +1,37 @@
 package com.mvgrass.Server.Model;
 
-import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "User")
 public class User {
-    public User(@NotNull String login, @NotNull String password, @NotNull String name, @NotNull String email) {
+    public User(String login, String password, String name, String email) {
         this.login = login;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    @NotNull
+    @Id
+    @Column(name = "login")
     private String login;
 
-    @NotNull
+    @Column(name = "password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
+    @Column(name = "email", nullable = false)
     private String email;
 
     public String getLogin() {
