@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/users")
 public class UsersController {
@@ -17,8 +19,15 @@ public class UsersController {
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<User> getUsers() {
-        return usersDao.findAllUsers();
+    public List<User> getUsers(HttpServletRequest request) {
+        String login = request.getParameter("login");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+
+        if(login!=null||name!=null||email!=null)
+            return usersDao.findAllUsers(login, name, email);
+        else
+            return usersDao.findAllUsers();
 
     }
 
@@ -39,6 +48,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/{login}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUser(@PathVariable String login) {
         usersDao.delete(login);
     }

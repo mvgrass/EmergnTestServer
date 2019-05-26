@@ -6,11 +6,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.util.List;
@@ -117,7 +115,45 @@ public class UsersDaoImpl implements IUsersDao{
     public List<User> findAllUsers() {
         Session session = sessionFactory.openSession();
 
-        Query query = session.createQuery("FROM users");
+        Query query = session.createQuery("FROM User");
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<User> findAllUsers(String login, String name, String email){
+        StringBuilder builder = new StringBuilder("FROM User");
+
+        boolean added = false;
+
+        if(login!=null||name!=null||email!=null) {
+            builder.append(" where");
+
+            if(login!=null) {
+                builder.append(" login like '").append("%").append(login).append("%'");
+                added = true;
+            }
+
+            if(name!=null) {
+                if(added)
+                    builder.append(" and");
+
+                builder.append(" name like '").append("%").append(name).append("%'");
+                added = true;
+            }
+
+            if(email!=null) {
+                if(added)
+                    builder.append(" and");
+
+                builder.append(" email like '").append("%").append(email).append("%'");
+            }
+
+        }
+
+        Session session = sessionFactory.openSession();
+
+        Query query = session.createQuery(builder.toString());
 
         return query.getResultList();
     }

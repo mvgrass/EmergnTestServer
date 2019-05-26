@@ -10,4 +10,5 @@ public interface IUsersDao {
     User updateUser(String login, User user);
     void delete(String user);
     List<User> findAllUsers();
+    List<User> findAllUsers(String login, String name, String email);
 }

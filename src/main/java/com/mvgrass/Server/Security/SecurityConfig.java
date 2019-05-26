@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 
 @Configuration
@@ -30,8 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.httpBasic()
+        http
+                .httpBasic()
 
+                .and()
+                .cors()
 
                 .and()
                 .authorizeRequests()
@@ -55,8 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE,"/api/users/{id}")
                 .access("isAuthenticated() and @guard.checkUser(authentication, #id)")
 
-                //TO DO
-                .and().csrf().disable();//ENABLE LATER
+                .and().csrf().disable();
     }
 
     @Bean
